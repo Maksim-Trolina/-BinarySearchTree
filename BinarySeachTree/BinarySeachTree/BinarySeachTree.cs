@@ -1,74 +1,74 @@
 namespace BinarySeachTree
 {
-    public class BinarySeachTree
+    public class BinarySeachTree<T>
     {
 
-        private Node root;
+        private Node<T> root;
 
         public BinarySeachTree()
         {
             root = null;
         }
         
-        private int Height(Node node)
+        private int Height<T>(Node<T> node)
         {
             if (node == null)
             {
                 return 0;
             }
 
-            return node.height;
+            return node.Height;
         }
 
-        private int BFactor(Node node)
+        private int BFactor<T>(Node<T> node)
         {
-            return Height(node.right) - Height(node.left);
+            return Height(node.Right) - Height(node.Left);
         }
 
-        private void FixHeight(Node node)
+        private void FixHeight<T>(Node<T> node)
         {
-            int hl = Height(node.left);
-            int hr = Height(node.right);
-            node.height = (hl > hr ? hl : hr) + 1;
+            int hl = Height(node.Left);
+            int hr = Height(node.Right);
+            node.Height = (hl > hr ? hl : hr) + 1;
         }
 
-        private Node RotateRight(Node p)
+        private Node<T> RotateRight<T>(Node<T> p)
         {
-            Node q = p.left;
-            p.left = q.right;
-            q.right = p;
+            Node<T> q = p.Left;
+            p.Left = q.Right;
+            q.Right = p;
             FixHeight(p);
             FixHeight(q);
             return q;
         }
 
-        private Node RotateLeft(Node q)
+        private Node<T> RotateLeft<T>(Node<T> q)
         {
-            Node p = q.right;
-            q.right = p.left;
-            p.left = q;
+            Node<T> p = q.Right;
+            q.Right = p.Left;
+            p.Left = q;
             FixHeight(q);
             FixHeight(p);
             return p;
         }
 
-        private Node Balance(Node p)
+        private Node<T> Balance<T>(Node<T> p)
         {
             FixHeight(p);
             if (BFactor(p) == 2)
             {
-                if (BFactor(p.right) < 0)
+                if (BFactor(p.Right) < 0)
                 {
-                    p.right = RotateRight(p.right);
+                    p.Right = RotateRight(p.Right);
                 }
                 return RotateLeft(p);
             }
 
             if (BFactor(p) == -2)
             {
-                if (BFactor(p.left) > 0)
+                if (BFactor(p.Left) > 0)
                 {
-                    p.left = RotateLeft(p.left);
+                    p.Left = RotateLeft(p.Left);
                 }
 
                 return RotateRight(p);
@@ -77,74 +77,74 @@ namespace BinarySeachTree
             return p;
         }
 
-        private Node Insert(Node p, int key)
+        private Node<T> Insert<T>(Node<T> p, int key,T value)
         {
             if (p == null)
             {
-                return new Node(key);
+                return new Node<T>(key,value);
             }
 
-            if (key < p.key)
+            if (key < p.Key)
             {
-                p.left = Insert(p.left, key);
+                p.Left = Insert(p.Left, key,value);
             }
             else
             {
-                p.right = Insert(p.right, key);
+                p.Right = Insert(p.Right, key,value);
             }
 
             return Balance(p);
         }
 
-        public void Insert(int key)
+        public void Insert(int key,T value)
         {
-            root = Insert(root, key);
+            root = Insert(root, key,value);
         }
 
-        private Node FindMin(Node p)
+        private Node<T> FindMin<T>(Node<T> p)
         {
-            return p.left != null ? FindMin(p.left) : p;
+            return p.Left != null ? FindMin(p.Left) : p;
         }
 
-        private Node RemoveMin(Node p)
+        private Node<T> RemoveMin<T>(Node<T> p)
         {
-            if (p.left == null)
+            if (p.Left == null)
             {
-                return p.right;
+                return p.Right;
             }
 
-            p.left = RemoveMin(p.left);
+            p.Left = RemoveMin(p.Left);
 
             return Balance(p);
         }
 
-        private Node Remove(Node p, int key)
+        private Node<T> Remove<T>(Node<T> p, int key)
         {
             if (p == null)
             {
                 return null;
             }
 
-            if (key < p.key)
+            if (key < p.Key)
             {
-                p.left = Remove(p.left, key);
+                p.Left = Remove(p.Left, key);
             }
-            else if (key > p.key)
+            else if (key > p.Key)
             {
-                p.right = Remove(p.right, key);
+                p.Right = Remove(p.Right, key);
             }
             else
             {
-                Node l = p.left;
-                Node r = p.right;
+                Node<T> l = p.Left;
+                Node<T> r = p.Right;
                 if (r == null)
                 {
                     return l;
                 }
 
-                Node min = FindMin(r);
-                min.right = RemoveMin(r);
-                min.left = l;
+                Node<T> min = FindMin(r);
+                min.Right = RemoveMin(r);
+                min.Left = l;
                 return Balance(min);
             }
 
@@ -156,10 +156,30 @@ namespace BinarySeachTree
             root = Remove(root, key);
         }
 
-        /*public int Contains(int key)
+        private T Contains<T>(Node<T> p, int key)
         {
-            
-        }*/
-        
+            if (p == null)
+            {
+                return default(T);
+            }
+
+            if (key < p.Key)
+            {
+                return Contains(p.Left, key);
+            }
+
+            if (key > p.Key)
+            {
+                return Contains(p.Right, key);
+            }
+
+            return p.Item;
+        }
+
+        public T Contains(int key)
+        {
+            return Contains(root, key);
+        }
+
     }
 }

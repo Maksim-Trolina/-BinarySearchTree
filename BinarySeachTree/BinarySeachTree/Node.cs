@@ -1,17 +1,19 @@
 namespace BinarySeachTree
 {
-    public class Node
+    public class Node<T>
     {
-        public int key;
-        public int height;
-        public Node left;
-        public Node right;
+        public T Item;
+        public int Key;
+        public int Height;
+        public Node<T> Left;
+        public Node<T> Right;
 
-        public Node(int k)
+        public Node(int k,T value)
         {
-            key = k;
-            left = right = null;
-            height = 1;
+            Key = k;
+            Left = Right = null;
+            Height = 1;
+            Item = value;
         }
 
     }
