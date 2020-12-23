@@ -1,17 +1,9 @@
 namespace BinarySeachTree
 {
-    public class Iterator
+    public interface Iterator<T>
     {
-        /*private Node current;
-        
-        public Node Next()
-        {
-            
-        }
+        public Node<T> Next();
 
-        public bool HasNext()
-        {
-            
-        }*/
+        public bool HasNext();
     }
 }

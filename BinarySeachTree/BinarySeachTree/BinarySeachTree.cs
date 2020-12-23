@@ -5,6 +5,11 @@ namespace BinarySeachTree
 
         private Node<T> root;
 
+        public Node<T> GetRoot()
+        {
+            return root;
+        }
+
         public BinarySeachTree()
         {
             root = null;
