@@ -3,7 +3,12 @@ namespace BinarySeachTree
     public class BinarySeachTree
     {
 
-        private Node root = null;
+        private Node root;
+
+        public BinarySeachTree()
+        {
+            root = null;
+        }
         
         private int Height(Node node)
         {
@@ -150,6 +155,11 @@ namespace BinarySeachTree
         {
             root = Remove(root, key);
         }
+
+        /*public int Contains(int key)
+        {
+            
+        }*/
         
     }
 }
